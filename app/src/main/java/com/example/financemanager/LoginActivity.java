@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.example.financemanager.HttpRequest.AuthenticationRequests;
 import com.example.financemanager.HttpRequest.PingServiceCall;
 import com.example.financemanager.HttpRequest.PingValue;
+import com.example.financemanager.Utils.HttpClient;
 import com.example.financemanager.Utils.RetrofitClient;
 
 import java.util.List;
@@ -56,6 +57,10 @@ public class LoginActivity extends AppCompatActivity {
         {
            text = ex.toString();//handle exception
         }
+
+        HttpClient client = new HttpClient("http://192.168.1.5:8080");
+        client.getAsyncCall("FinanceOperationsManager_Server/GetFinanceOperations");
+
         Toast.makeText(LoginActivity.this, text, Toast.LENGTH_SHORT).show();
     }
 
