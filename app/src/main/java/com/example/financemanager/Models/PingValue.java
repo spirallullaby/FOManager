@@ -1,4 +1,4 @@
-package com.example.financemanager.HttpRequest;
+package com.example.financemanager.Models;
 
 import com.google.gson.annotations.SerializedName;
 

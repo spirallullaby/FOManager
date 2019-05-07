@@ -1,6 +1,7 @@
 package com.example.financemanager;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -9,15 +10,8 @@ import android.widget.Toast;
 
 import com.example.financemanager.HttpRequest.AuthenticationRequests;
 import com.example.financemanager.HttpRequest.PingServiceCall;
-import com.example.financemanager.HttpRequest.PingValue;
-import com.example.financemanager.Utils.HttpClient;
+import com.example.financemanager.Models.LoginModel;
 import com.example.financemanager.Utils.RetrofitClient;
-
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -35,33 +29,44 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onClickLoginButton(View view) {
-        try {
-            AuthenticationRequests gitHubService = RetrofitClient.getRetrofitInstance().create(AuthenticationRequests.class);
-            Call<List<PingValue>> call = gitHubService.pingServer();
-            call.enqueue(new Callback<List<PingValue>>() {
-                public String firstResult;
-                @Override
-                public void onResponse(Call<List<PingValue>> call, Response<List<PingValue>> response) {
-                    response.body(); // have your all data
-                    PingValue value = response.body().get(0);
-                    text = value.toString();
-                }
-
-                @Override
-                public void onFailure(Call<List<PingValue>> call, Throwable t) {
-                }
-            });
-            String test = text;
-        }
-        catch(Exception ex)
-        {
-           text = ex.toString();//handle exception
-        }
-
-        HttpClient client = new HttpClient("http://192.168.1.5:8080");
-        client.getAsyncCall("FinanceOperationsManager_Server/GetFinanceOperations");
-
-        Toast.makeText(LoginActivity.this, text, Toast.LENGTH_SHORT).show();
+        LogInService call = new LogInService(this);
+        call.execute();
     }
 
+    public class LogInService extends AsyncTask<String, Void, String> {
+        private String pingValue = "";
+        private android.content.Context context = null;
+
+        private LogInService(){
+            super();
+        }
+
+        public LogInService(android.content.Context context) {
+            this();
+            this.context = context;
+        }
+
+        @Override
+        public String doInBackground(String... params) {
+            try {
+                LoginModel loginModel = new LoginModel();
+                loginModel.emailAddress = params[0];
+                loginModel.password = params[1];
+                AuthenticationRequests service = RetrofitClient.getRetrofitInstance().create(AuthenticationRequests.class);
+                String ping = service.pingServer().execute().body().get(0).toString();
+                return ping;
+            }
+            catch(Exception ex)
+            {
+                return ex.toString();//handle exception
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            pingValue = result;
+            Toast toast = Toast.makeText(context, result, Toast.LENGTH_LONG);
+            toast.show();
+        }
+    }
 }
