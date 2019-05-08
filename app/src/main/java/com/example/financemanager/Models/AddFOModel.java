@@ -2,11 +2,7 @@ package com.example.financemanager.Models;
 
 import com.google.gson.annotations.SerializedName;
 
-public class FOModel{
-
-    @SerializedName("Id")
-    public int Id;
-
+public class AddFOModel {
     @SerializedName("UserId")
     public int UserId;
 

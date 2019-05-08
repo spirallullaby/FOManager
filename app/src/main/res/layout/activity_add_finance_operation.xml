@@ -26,20 +26,6 @@
             android:inputType="numberDecimal"
             android:hint="Sum"/>
 
-        <MultiAutoCompleteTextView
-            android:id="@+id/actionName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Activity name" />
-
-        <MultiAutoCompleteTextView
-            android:id="@+id/endpoint"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Endpoint" />
-
         <EditText
             android:id="@+id/description"
             android:layout_width="wrap_content"
@@ -52,7 +38,8 @@
             android:id="@+id/addFO"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add" />
+            android:text="Add"
+            android:onClick="onClickAddButton" />
 
     </LinearLayout>
 

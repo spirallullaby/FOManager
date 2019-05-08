@@ -8,10 +8,4 @@ public class LoginModel {
 
     @SerializedName("Password")
     public String password;
-
-
-    //@Override
-    //public String toString() {
-        //return value;
-    //}
 }

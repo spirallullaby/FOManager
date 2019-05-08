@@ -12,7 +12,6 @@ import com.example.financemanager.LoginActivity;
 import com.example.financemanager.Utils.RetrofitClient;
 
 public class PingServiceCall extends AsyncTask<Call, Void, String>{
-    private String pingValue = "";
     private android.content.Context context = null;
 
     public PingServiceCall(android.content.Context context) {
@@ -35,12 +34,7 @@ public class PingServiceCall extends AsyncTask<Call, Void, String>{
 
     @Override
     protected void onPostExecute(String result) {
-        pingValue = result;
         Toast toast = Toast.makeText(context, result, Toast.LENGTH_LONG);
         toast.show();
-    }
-
-    public String getPingValue(){
-        return pingValue;
     }
 }
