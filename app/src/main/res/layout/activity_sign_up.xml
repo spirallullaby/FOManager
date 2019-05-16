@@ -19,12 +19,12 @@
         android:gravity="center">
 
         <EditText
-            android:id="@+id/userName"
+            android:id="@+id/emailAddress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPersonName"
-            android:hint="User name"/>
+            android:inputType="textEmailAddress"
+            android:hint="Email address"/>
 
         <EditText
             android:id="@+id/password"

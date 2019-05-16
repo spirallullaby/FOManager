@@ -24,7 +24,7 @@ public class AddFinanceOperationCall extends AsyncTask<Call, Void, String> {
         try{
             FinanceOperationsRequests service = RetrofitClient.getRetrofitInstance().create(FinanceOperationsRequests.class);
             res = service.addFinanceOperation(model).execute().body();
-            return res.errorMessage;
+            return res.ErrorMessage;
         }
         catch (Exception ex){
             return ex.toString();
@@ -34,7 +34,7 @@ public class AddFinanceOperationCall extends AsyncTask<Call, Void, String> {
     @Override
     protected void onPostExecute(String error) {
         String message;
-        if(res.success && (error == null || error.isEmpty())){
+        if(res.Success && (error == null || error.isEmpty())){
             message = "Success!";
         }
         else{

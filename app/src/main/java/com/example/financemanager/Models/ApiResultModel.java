@@ -3,12 +3,12 @@ package com.example.financemanager.Models;
 import com.google.gson.annotations.SerializedName;
 
 public class ApiResultModel<T> {
-    @SerializedName("success")
-    public boolean success;
+    @SerializedName("Success")
+    public boolean Success;
 
-    @SerializedName("errorMessage")
-    public String errorMessage;
+    @SerializedName("ErrorMessage")
+    public String ErrorMessage;
 
-    @SerializedName("result")
-    public T result;
+    @SerializedName("Result")
+    public T Result;
 }

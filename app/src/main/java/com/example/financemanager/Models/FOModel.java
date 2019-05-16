@@ -15,4 +15,7 @@ public class FOModel{
 
     @SerializedName("Description")
     public String Description;
+
+    @SerializedName("Date")
+    public java.util.Date Date;
 }

@@ -12,16 +12,15 @@ import com.example.financemanager.Models.AddFOModel;
 import com.example.financemanager.Models.FOModel;
 
 public class AddFinanceOperationActivity extends AppCompatActivity {
-    EditText sumEditText;
-    EditText descriptionEditText;
+    EditText sumEditText, descriptionEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_finance_operation);
 
-        sumEditText = (EditText)findViewById(R.id.editSum);
-        descriptionEditText = (EditText)findViewById(R.id.description);
+        sumEditText = findViewById(R.id.editSum);
+        descriptionEditText = findViewById(R.id.description);
     }
 
     public void onClickAddButton(View view) {

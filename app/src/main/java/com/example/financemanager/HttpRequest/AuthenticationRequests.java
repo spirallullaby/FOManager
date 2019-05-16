@@ -13,8 +13,8 @@ public interface AuthenticationRequests {
     @GET("/ping")
     Call<List<PingValue>> pingServer();
 
-    @POST("/login")
-    Call<List<LoginModel>> login();
+    @POST("apy/user/login")
+    Call<LoginModel> login();
 
 }
 
