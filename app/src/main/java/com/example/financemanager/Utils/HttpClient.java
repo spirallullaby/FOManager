@@ -1,27 +1,29 @@
 package com.example.financemanager.Utils;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class HttpClient<T> {
     private static String BASE_URL;
-    private static Gson gson = new Gson();
 
-    public HttpClient(String base_url) {
-        BASE_URL = base_url;
+    public HttpClient() {
+        BASE_URL = Constants.ServerURL;
     }
 
-    public T get(String url) throws IOException {
+    public T get(String url, TypeReference typeReference) throws IOException {
         OkHttpClient httpClient = new OkHttpClient();
 
         url = BASE_URL + "/" + url;
+
+        ObjectMapper mapper = new ObjectMapper();
 
         Request request = new Request.Builder()
                 .url(url)
@@ -29,9 +31,34 @@ public class HttpClient<T> {
 
         try {
             Response response = httpClient.newCall(request).execute();
-            Type userType = new TypeToken<T>(){}.getType();
             String responseJson = response.body().string();
-            T result = gson.fromJson(responseJson, userType);
+            T result = mapper.readValue(responseJson, typeReference);
+            return result;
+        } catch (IOException ex) {
+            throw ex;
+        }
+    }
+
+    public T post(String url, Object requestBody, TypeReference typeReference) throws IOException {
+        OkHttpClient httpClient = new OkHttpClient();
+
+        url = BASE_URL + "/" + url;
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        String json = mapper.writeValueAsString(requestBody);
+        RequestBody body = RequestBody.create(
+                MediaType.parse("application/json; charset=utf-8"), json);
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(body)
+                .build();
+
+        try {
+            Response response = httpClient.newCall(request).execute();
+            String responseJson = response.body().string();
+            T result = mapper.readValue(responseJson, typeReference);
             return result;
         } catch (IOException ex) {
             throw ex;
