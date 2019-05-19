@@ -2,7 +2,7 @@ package com.example.financemanager.Models;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 public class AddFOModel {
     @SerializedName("UserId")
@@ -15,5 +15,5 @@ public class AddFOModel {
     public String Description;
 
     @SerializedName("Date")
-    public Timestamp Date;
+    public Date Date;
 }

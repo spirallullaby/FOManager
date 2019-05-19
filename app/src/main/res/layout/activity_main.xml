@@ -29,14 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:width="200sp"
-            android:text="Add Income"
-            android:onClick="onClickAddFO"/>
-        <Button
-            android:id="@+id/addOutcome"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:width="200sp"
-            android:text="Add Outcome"
+            android:text="Add Operation"
             android:onClick="onClickAddFO"/>
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
