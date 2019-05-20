@@ -29,8 +29,13 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     public void onClickSignUpButton(View view) {
-        SignUpActivity.SignUpService call = new SignUpActivity.SignUpService(this);
-        call.execute();
+        if (!emailAddressEditText.getText().toString().equals("") && !passwordEditText.getText().toString().equals("") && !repeatPasswordEditText.getText().toString().equals("")) {
+            SignUpActivity.SignUpService call = new SignUpActivity.SignUpService(this);
+            call.execute();
+        } else {
+            Toast toast = Toast.makeText(this, "Please fill the email, password and repeat password fields!", Toast.LENGTH_LONG);
+            toast.show();
+        }
     }
 
     public class SignUpService extends AsyncTask<String, Void, ApiResultModel<UserModel>> {

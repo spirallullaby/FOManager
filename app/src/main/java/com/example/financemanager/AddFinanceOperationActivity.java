@@ -37,11 +37,11 @@ public class AddFinanceOperationActivity extends AppCompatActivity {
     }
 
     public void onClickAddButton(View view) {
-        if(sumEditText != null && descriptionEditText != null){
+        if(!sumEditText.getText().toString().equals("") && !descriptionEditText.getText().toString().equals("")){
             AddFOService call = new AddFOService(this);
             call.execute();
         } else {
-            Toast toast = Toast.makeText(this, "Please add values for sum and description!", Toast.LENGTH_LONG);
+            Toast toast = Toast.makeText(this, "Please fill the sum and description fields!", Toast.LENGTH_LONG);
             toast.show();
         }
     }

@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 
 import java.util.List;
 
+import static com.example.financemanager.Utils.HelperMethods.GetCalendarFromString;
+
 public class ExportFinanceActivity extends AppCompatActivity {
     Integer id = 0;
     EditText dateFromEditText, dateToEditText;
@@ -29,26 +31,27 @@ public class ExportFinanceActivity extends AppCompatActivity {
         if (intent.hasExtra("Id")) {
             id = intent.getIntExtra("Id", 0);
         }
+
+        dateFromEditText = findViewById(R.id.dateFrom);
+        dateToEditText = findViewById(R.id.dateTo);
     }
 
     public void onClickExportButton(View view) {
-        if(dateFromEditText != null && dateToEditText != null){
+        if(!dateFromEditText.getText().toString().equals("") && !dateToEditText.getText().toString().equals("")){
             ExportHistoryService call = new ExportHistoryService(this);
             call.execute();
         } else {
-            //TODO: add actual message
-            Toast toast = Toast.makeText(this, "Please add values for sum and description!", Toast.LENGTH_LONG);
+            Toast toast = Toast.makeText(this, "Please fill the date from and date to fields!", Toast.LENGTH_LONG);
             toast.show();
         }
     }
 
     public void onClickExportEmailButton(View view) {
-        if(dateFromEditText != null && dateToEditText != null){
+        if(!dateFromEditText.getText().toString().equals("") && !dateToEditText.getText().toString().equals("")){
             EmailHistoryService call = new EmailHistoryService(this);
             call.execute();
         } else {
-            //TODO: add actual message
-            Toast toast = Toast.makeText(this, "Please add values for sum and description!", Toast.LENGTH_LONG);
+            Toast toast = Toast.makeText(this, "Please fill the date from and date to fields!", Toast.LENGTH_LONG);
             toast.show();
         }
     }
@@ -69,9 +72,8 @@ public class ExportFinanceActivity extends AppCompatActivity {
         public ApiResultModel<List<FOModel>> doInBackground(String... params) {
             try {
                 ExtractOperationsModel extractOperationsModel = new ExtractOperationsModel();
-                //TODO: Add actual dates
-                extractOperationsModel.StartDate = null;
-                extractOperationsModel.EndDate = null;
+                extractOperationsModel.StartDate = GetCalendarFromString(dateFromEditText.getText().toString());
+                extractOperationsModel.EndDate = GetCalendarFromString(dateToEditText.getText().toString());
                 extractOperationsModel.UserId = id;
                 HttpClient<ApiResultModel<List<FOModel>>> client = new HttpClient<ApiResultModel<List<FOModel>>>();
                 ApiResultModel<List<FOModel>> result = client.post("api/FOManager/exportHistory", extractOperationsModel, new TypeReference<ApiResultModel<List<FOModel>>>(){});
@@ -116,9 +118,8 @@ public class ExportFinanceActivity extends AppCompatActivity {
         public ApiResultModel<Void> doInBackground(String... params) {
             try {
                 ExtractOperationsModel extractOperationsModel = new ExtractOperationsModel();
-                //TODO: Add actual dates
-                extractOperationsModel.StartDate = null;
-                extractOperationsModel.EndDate = null;
+                extractOperationsModel.StartDate = GetCalendarFromString(dateFromEditText.getText().toString());
+                extractOperationsModel.EndDate = GetCalendarFromString(dateToEditText.getText().toString());
                 extractOperationsModel.UserId = id;
                 HttpClient<ApiResultModel<Void>> client = new HttpClient<ApiResultModel<Void>>();
                 ApiResultModel<Void> result = client.post("api/FOManager/emailHistory", extractOperationsModel, new TypeReference<ApiResultModel<Void>>(){});

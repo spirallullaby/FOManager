@@ -32,8 +32,13 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onClickLoginButton(View view) {
-        LogInService call = new LogInService(this);
-        call.execute();
+        if (!emailAddressEditText.getText().toString().equals("") && !passwordEditText.getText().toString().equals("")) {
+            LogInService call = new LogInService(this);
+            call.execute();
+        } else {
+            Toast toast = Toast.makeText(this, "Please fill the email and password fields!", Toast.LENGTH_LONG);
+            toast.show();
+        }
     }
 
     public class LogInService extends AsyncTask<String, Void, ApiResultModel<UserModel>> {
