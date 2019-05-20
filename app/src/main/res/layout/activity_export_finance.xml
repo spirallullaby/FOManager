@@ -30,32 +30,31 @@
                 android:id="@+id/dateFrom"
                 android:layout_width="140dp"
                 android:layout_height="wrap_content"
-                android:inputType="date"
-                android:hint="Date from (d-m-y)" />
+                android:hint="Date from"
+                android:inputType="date" />
 
             <EditText
                 android:id="@+id/dateTo"
                 android:layout_width="140dp"
                 android:layout_height="wrap_content"
-                android:inputType="date"
-                android:hint="Date to (d-m-y)" />
+                android:hint="Date to"
+                android:inputType="date" />
 
             <Button
                 android:id="@+id/buttonExport"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Export"
-                android:onClick="onClickExportButton" />
+                android:onClick="onClickExportButton"
+                android:text="Export" />
         </LinearLayout>
 
         <TableLayout
-            android:id="@+id/exportResultsTable"
-            android:layout_width="395dp"
+            android:id="@+id/foHistoryTable"
+            android:layout_width="match_parent"
             android:layout_height="300dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent">
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:stretchColumns="*">
 
         </TableLayout>
 
@@ -63,8 +62,9 @@
             android:id="@+id/buttonEmail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Email"
-            android:onClick="onClickExportEmailButton" />
+            android:onClick="onClickExportEmailButton"
+            android:text="Email" />
+
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
