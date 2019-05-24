@@ -8,6 +8,9 @@ public class AddFOModel {
     @SerializedName("UserId")
     public int UserId;
 
+    @SerializedName("Type")
+    public int Type;
+
     @SerializedName("Sum")
     public double Sum;
 

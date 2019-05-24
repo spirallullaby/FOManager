@@ -21,6 +21,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import static com.example.financemanager.Utils.HelperMethods.GetCalendarFromString;
@@ -44,23 +45,36 @@ public class ExportFinanceActivity extends AppCompatActivity {
         dateFromEditText = findViewById(R.id.dateFrom);
         dateToEditText = findViewById(R.id.dateTo);
         foHistoryTable = findViewById(R.id.foHistoryTable);
+
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        Date currentDate = new Date();
+        Calendar tomorrow = Calendar.getInstance();
+        tomorrow.add(Calendar.DATE, 1);
+        dateFromEditText.setText(dateFormat.format(currentDate));
+        dateToEditText.setText(dateFormat.format(tomorrow.getTime()));
     }
 
     private void initializeFOHistoryTable() {
         foHistoryTable.removeAllViews();
 
-        TextView sum = new TextView(this);
-        sum.setText("Sum");
-        TextView desc = new TextView(this);
-        desc.setText("Description");
         TextView date = new TextView(this);
         date.setText("Date");
+        TextView desc = new TextView(this);
+        desc.setText("Description");
+        TextView income = new TextView(this);
+        income.setText("Income");
+        TextView expense = new TextView(this);
+        expense.setText("Expense");
+        TextView balance = new TextView(this);
+        balance.setText("Balance");
 
         TableRow rowHeader = new TableRow(this);
 
-        rowHeader.addView(sum);
-        rowHeader.addView(desc);
         rowHeader.addView(date);
+        rowHeader.addView(desc);
+        rowHeader.addView(income);
+        rowHeader.addView(expense);
+        rowHeader.addView(balance);
 
         foHistoryTable.addView(rowHeader);
     }
@@ -148,24 +162,53 @@ public class ExportFinanceActivity extends AppCompatActivity {
             initializeFOHistoryTable();
 
             DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            double overallBalance = 0.0;
 
             for (int i = 0; i < results.size(); i++) {
                 FOModel result = results.get(i);
-                TextView sum = new TextView(context);
-                sum.setText(String.valueOf(result.Sum));
-                TextView desc = new TextView(context);
-                desc.setText(result.Description);
                 TextView date = new TextView(context);
+                TextView desc = new TextView(context);
+                TextView income = new TextView(context);
+                TextView expense = new TextView(context);
+                TextView balance = new TextView(context);
+
+                if (result.Type == 1) {
+                    income.setText(String.valueOf(result.Sum));
+                    overallBalance += result.Sum;
+                } else if (result.Type == 2) {
+                    expense.setText(String.valueOf(result.Sum));
+                    overallBalance -= result.Sum;
+                }
+
                 date.setText(dateFormat.format(result.Date));
+                desc.setText(result.Description);
+                balance.setText(String.valueOf(overallBalance));
 
                 TableRow rowHeader = new TableRow(context);
 
-                rowHeader.addView(sum);
-                rowHeader.addView(desc);
                 rowHeader.addView(date);
+                rowHeader.addView(desc);
+                rowHeader.addView(income);
+                rowHeader.addView(expense);
+                rowHeader.addView(balance);
 
                 foHistoryTable.addView(rowHeader);
             }
+
+            TextView emptyView = new TextView(context);
+            TextView totalStringView = new TextView(context);
+            TextView totalView = new TextView(context);
+
+            totalStringView.setText("Total: ");
+            totalView.setText(String.valueOf(overallBalance));
+
+            TableRow totalRowHeader = new TableRow(context);
+            totalRowHeader.addView(emptyView);
+            totalRowHeader.addView(emptyView);
+            totalRowHeader.addView(emptyView);
+            totalRowHeader.addView(totalStringView);
+            totalRowHeader.addView(totalView);
+            foHistoryTable.addView(totalRowHeader);
         }
     }
 

@@ -5,7 +5,9 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.financemanager.Models.AddFOModel;
@@ -15,11 +17,14 @@ import com.example.financemanager.Models.UserModel;
 import com.example.financemanager.Utils.HttpClient;
 import com.fasterxml.jackson.core.type.TypeReference;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.sql.Timestamp;
+import java.util.List;
 
 public class AddFinanceOperationActivity extends AppCompatActivity {
     Integer id = 0;
+    Spinner foTypeSpinner;
     EditText sumEditText, descriptionEditText;
 
     @Override
@@ -32,8 +37,20 @@ public class AddFinanceOperationActivity extends AppCompatActivity {
             id = intent.getIntExtra("Id", 0);
         }
 
+        foTypeSpinner = findViewById(R.id.FOType);
         sumEditText = findViewById(R.id.editSum);
         descriptionEditText = findViewById(R.id.description);
+
+        setSpinnerValues();
+    }
+
+    public void setSpinnerValues() {
+        List<String> list = new ArrayList<String>();
+        list.add("Income");
+        list.add("Expense");
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, list);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        foTypeSpinner.setAdapter(adapter);
     }
 
     public void onClickAddButton(View view) {
@@ -65,6 +82,7 @@ public class AddFinanceOperationActivity extends AppCompatActivity {
 
                 AddFOModel addFOModel = new AddFOModel();
                 addFOModel.UserId = id;
+                addFOModel.Type = foTypeSpinner.getSelectedItemPosition() + 1;
                 addFOModel.Sum = sum;
                 addFOModel.Description = descriptionEditText.getText().toString();
                 addFOModel.Date = new Date();
