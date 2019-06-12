@@ -1,6 +1,9 @@
 package com.example.financemanager;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,6 +20,7 @@ import com.example.financemanager.Models.FOModel;
 import com.example.financemanager.Utils.HttpClient;
 import com.fasterxml.jackson.core.type.TypeReference;
 
+import java.lang.invoke.CallSite;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -31,6 +35,7 @@ public class ExportFinanceActivity extends AppCompatActivity {
     EditText dateFromEditText, dateToEditText;
     Calendar dateFrom, dateTo;
     TableLayout foHistoryTable;
+    private DatePickerDialog.OnDateSetListener dateFromSetListener, dateToSetListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,11 +52,63 @@ public class ExportFinanceActivity extends AppCompatActivity {
         foHistoryTable = findViewById(R.id.foHistoryTable);
 
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        Date currentDate = new Date();
+        final Date currentDate = new Date();
         Calendar tomorrow = Calendar.getInstance();
         tomorrow.add(Calendar.DATE, 1);
         dateFromEditText.setText(dateFormat.format(currentDate));
         dateToEditText.setText(dateFormat.format(tomorrow.getTime()));
+
+        dateFromEditText.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Calendar cal = Calendar.getInstance();
+                    int year = cal.get(Calendar.YEAR);
+                    int month = cal.get(Calendar.MONTH);
+                    int day = cal.get(Calendar.DAY_OF_MONTH);
+
+                    DatePickerDialog dpd = new DatePickerDialog(ExportFinanceActivity.this,
+                            android.R.style.Theme_Holo_Light_Dialog_MinWidth,
+                            dateFromSetListener,
+                            year, month, day);
+                    dpd.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    dpd.show();
+                }
+            }
+        );
+
+        dateToEditText.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Calendar cal = Calendar.getInstance();
+                    int year = cal.get(Calendar.YEAR);
+                    int month = cal.get(Calendar.MONTH);
+                    int day = cal.get(Calendar.DAY_OF_MONTH);
+
+                    DatePickerDialog dpd = new DatePickerDialog(ExportFinanceActivity.this,
+                            android.R.style.Theme_Holo_Light_Dialog_MinWidth,
+                            dateToSetListener,
+                            year, month, day);
+                    dpd.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    dpd.show();
+                }
+            }
+        );
+
+        dateFromSetListener = new DatePickerDialog.OnDateSetListener(){
+            @Override
+            public void onDateSet(android.widget.DatePicker view, int year, int month, int dayOfMonth) {
+                ++month;
+                dateFromEditText.setText(String.format("%02d-%02d-%04d", dayOfMonth, month, year));
+            }
+        };
+
+        dateToSetListener = new DatePickerDialog.OnDateSetListener(){
+            @Override
+            public void onDateSet(android.widget.DatePicker view, int year, int month, int dayOfMonth) {
+                ++month;
+                dateToEditText.setText(String.format("%02d-%02d-%04d", dayOfMonth, month, year));
+            }
+        };
     }
 
     private void initializeFOHistoryTable() {
@@ -147,7 +204,11 @@ public class ExportFinanceActivity extends AppCompatActivity {
         protected void onPostExecute(ApiResultModel<List<FOModel>> result) {
             if (result != null) {
                 if (result.Success) {
-                    fillTable(result.Result);
+                    try {
+                        fillTable(result.Result);
+                    }catch(Exception ex){
+                        String tst = ex.toString();
+                    }
                 } else {
                     Toast toast = Toast.makeText(context, result.ErrorMessage, Toast.LENGTH_LONG);
                     toast.show();
@@ -204,8 +265,10 @@ public class ExportFinanceActivity extends AppCompatActivity {
 
             TableRow totalRowHeader = new TableRow(context);
             totalRowHeader.addView(emptyView);
-            totalRowHeader.addView(emptyView);
-            totalRowHeader.addView(emptyView);
+            TextView emptyView1 = new TextView(context);
+            totalRowHeader.addView(emptyView1);
+            TextView emptyView2 = new TextView(context);
+            totalRowHeader.addView(emptyView2);
             totalRowHeader.addView(totalStringView);
             totalRowHeader.addView(totalView);
             foHistoryTable.addView(totalRowHeader);
